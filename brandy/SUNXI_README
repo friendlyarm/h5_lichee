@@ -1,0 +1,72 @@
+# Get and build the BOOT2.0
+
+## Download the source code
+	$ git clone git://172.16.1.11/lichee/brandy.git      (B network)
+	$ git clone git://192.168.200.11/lichee/brandy.git   (D network)
+
+## Build
+To support linux-3.10:
+
+	$ cd u-boot-2014.07
+
+To support linux-3.4:
+
+	$ cd u-boot-2011.09
+
+Make distclean is necessary if it is your first time to build u-boot
+or you have ever config other platform.
+
+	$ make distclean
+
+You must configure U-Boot for one specific board type. This is done by typing:
+
+	$ make NAME_config
+
+where "NAME_config" is the name of one of the existing configurations;
+see boards.cfg for more supported names.
+List of configurations:
+
+	(config 1633)   A31/A31S  :   $ make sun8iw1p1_config
+	(config 1650)   A23       :   $ make sun8iw3p1_config
+	(config 1667)   A33       :   $ make sun8iw5p1_config
+	(config 1673)   A83       :   $ make sun8iw6p1_config
+	(config 1680)   H3        :   $ make sun8iw7p1_config
+	(config 1681)   V3/V3S    :   $ make sun8iw8p1_config
+	(config 1677)   --        :   $ make sun8iw9p1_config
+	(config 1699)   B100      :   $ make sun8iw10p1_config
+	(config 1701)   V40/A20E  :   $ make sun8iw11p1_config
+	(config 1639)   A80       :   $ make sun9iw1p1_config
+	(config 1689)   A64       :   $ make sun50iw1p1_config
+	(config 1718)   H5        :   $ make sun50iw2p1_config
+
+Finally, build some working images:
+
+	$ make -j14             (build uboot,"make -jn" means to build the image with multiple make jobs)
+	$ make boot0            (build boot0)
+	$ make fes              (build fes)
+	$ make sboot            (build sboot)
+	$ make spl              (build boot0 fes sboot)
+
+Also,it is possible to build the whole bootloader by typing "./build.sh -p NAME" under directory brandy.
+
+	$ cd ../ && ./build.sh -p NAME
+
+NAME means the the board name,such as sun6i/sun7i/sun8iw3p1/sun9iw1p1 etc.
+See boards.cfg for more supported names.
+List of NAME:
+
+	(build 1633 bootloader)   A31/A31S  :   $ ./build.sh -p sun8iw1p1
+	(build 1650 bootloader)   A23       :   $ ./build.sh -p sun8iw3p1
+	(build 1667 bootloader)   A33       :   $ ./build.sh -p sun8iw5p1
+	(build 1673 bootloader)   A83       :   $ ./build.sh -p sun8iw6p1
+	(build 1680 bootloader)   H3        :   $ ./build.sh -p sun8iw7p1
+	(build 1681 bootloader)   V3/V3S    :   $ ./build.sh -p sun8iw8p1
+	(build 1677 bootloader)   --        :   $ ./build.sh -p sun8iw9p1
+	(build 1699 bootloader)   B100      :   $ ./build.sh -p sun8iw10p1
+	(build 1701 bootloader)   V40/A20E  :   $ ./build.sh -p sun8iw11p1
+	(build 1639 bootloader)   A80       :   $ ./build.sh -p sun9iw1p1
+	(build 1689 bootloader)   A64       :   $ ./build.sh -p sun50iw1p1
+	(build 1718 bootloader)   H5        :   $ ./build.sh -p sun50iw2p1
+
+
+Enjoy it!

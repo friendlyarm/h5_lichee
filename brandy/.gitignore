@@ -1,0 +1,9 @@
+*.depend
+*.o
+/*.patch
+/*.diff
+*.orig
+*.rej
+*.log
+*~
+
