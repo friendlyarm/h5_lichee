@@ -755,8 +755,8 @@ function mkkernel()
 		elif [ "x$LIHCEE_BUILD_CMD" = "x" ] ; then
 			printf "\033[0;31;1muse last time build config\033[0m\n"
 		else
-			printf "\033[0;31;1mclean last time build for config cmd used\033[0m\n"
-			(cd ${LICHEE_KERN_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
+			printf "\033[0;31;1mskip clean last time build for config cmd used\033[0m\n"
+			#(cd ${LICHEE_KERN_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
 		fi
 	else
 		echo "${LICHEE_KERN_DEFCONF}" > ${config_mark}
