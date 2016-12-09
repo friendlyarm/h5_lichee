@@ -49,7 +49,7 @@ build_uboot()
 		cd u-boot-2011.09/
 	fi
 
-	make distclean
+	# make distclean
 	if [ "x$MODE" = "xota_test" ] ; then
 		export "SUNXI_MODE=ota_test"
 	fi
