@@ -18,6 +18,7 @@ function pt_info()
 pt_info "This script is only for ANDROID."
 cd ..
 (cd brandy && ./build.sh -p sun50iw2p1 && cd -)
+touch ./linux-3.10/.scmversion
 echo -e "1\n0\n" | ./build.sh config
 
 cd ../android
