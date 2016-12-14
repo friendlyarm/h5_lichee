@@ -49,7 +49,7 @@ if [ ${BLOCK_CNT} -gt 64000000 ]; then
 fi
 
 if [ "x${SYSTEM}" = x"android" ]; then
-    POSITION=84
+    POSITION=68
 elif [ "x${SYSTEM}" = x"dragonboard" ]; then
     POSITION=68
 else
@@ -57,7 +57,7 @@ else
     exit 1
 fi
 cd ../tools/pack/out/ > /dev/null
-[ -e ${FILE} ] && dd if=${FILE} of=${SDCARD} bs=1M seek=68
+[ -e ${FILE} ] && dd if=${FILE} of=${SDCARD} bs=1M seek=${POSITION}
 sync
 cd -  > /dev/null
 
