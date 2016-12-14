@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#set -x
 function pt_error()
 {
     echo -e "\033[1;31mERROR: $*\033[0m"
@@ -17,17 +17,7 @@ function pt_info()
 
 pt_info "This script is only for ANDROID."
 cd ..
-(cd brandy && ./build.sh -p sun50iw2p1 && cd -)
+(cd ./brandy && ./build.sh -p sun50iw2p1 && cd -)
 touch ./linux-3.10/.scmversion
 echo -e "1\n0\n" | ./build.sh config
-
-cd ../android
-source ./build/envsetup.sh
-lunch cheetah_fvd_p1-eng
-extract-bsp
-if [ "x${1}" = "xboot.img" ]; then
-    make bootimage
-else 
-    make -j8
-fi
-pack
+cd -
