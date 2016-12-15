@@ -562,6 +562,11 @@ function do_common()
 		update_uboot_fdt u-boot.fex sunxi.fex u-boot.fex >/dev/null
 	fi
 
+	if [ -f "scp.fex" ]; then
+		echo "update scp"
+		update_scp scp.fex sunxi.fex >/dev/null
+	fi
+
 	# Those files for Nand or Card
 	update_boot0 boot0_nand.fex		sys_config.bin NAND > /dev/null
 	update_boot0 boot0_sdcard.fex	sys_config.bin SDMMC_CARD > /dev/null
