@@ -113,7 +113,7 @@ uart_debug_tx   = port:PA4<2><1><default><default>
 uart_debug_rx   = port:PA5<2><1><default><default>
 
 [jtag_para]
-jtag_enable     = 1
+jtag_enable     = 0
 jtag_ms         = port:PB0<4><default><default><default>
 jtag_ck         = port:PB1<4><default><default><default>
 jtag_do         = port:PB2<4><default><default><default>
@@ -590,7 +590,7 @@ interface               = 1
 ;pwm config
 ;----------------------------------------------------------------------------------
 [pwm0]
-pwm_used            = 1
+pwm_used            = 0
 pwm_positive        = port:PD22<2><0><default><default>
 
 [pwm0_suspend]
@@ -964,7 +964,7 @@ sn_filename = "sn.txt"
 ;--------------------------------------------------------------------------------
 [gsensor]
 compatible          = "allwinner,sun50i-gsensor-para";
-gsensor_used        = 1
+gsensor_used        = 0
 gsensor_twi_id      = 1
 gsensor_twi_addr    = 0x18
 gsensor_int1        = port:PA09<6><1><default><default>
@@ -979,7 +979,7 @@ gsensor_vcc_io_val  = 3100
 ;--------------------------------------------------------------------------------
 [gsensor_list_para]
 compatible 				  = "allwinner,sun50i-gsensor-list-para"
-gsensor_det_used          = 1
+gsensor_det_used          = 0
 lsm9ds0_acc_mag			  = 1
 bma250                    = 1
 mma8452                   = 1
@@ -1078,7 +1078,7 @@ gy_int2             =
 ;--------------------------------------------------------------------------------
 [gy_list_para]
 compatible 			= "allwinner,sun50i-gyr_sensors-list-para"
-gy_det_used         = 1
+gy_det_used         = 0
 lsm9ds0_gyr	     	= 1
 l3gd20_gyr          = 0
 bmg160_gyr	     	= 1
@@ -1100,7 +1100,7 @@ ls_int              = port:PA12<6><1><default><default>
 ;--------------------------------------------------------------------------------
 [ls_list_para]
 compatible 			= "allwinner,sun50i-lsensors-list-para"
-ls_det_used         = 1
+ls_det_used         = 0
 ltr_501als          = 1
 jsa1212		     	= 0
 jsa1127		     	= 1
@@ -1122,7 +1122,7 @@ compass_int         = port:PA11<6><1><default><default>
 ;--------------------------------------------------------------------------------
 [compass_list_para]
 compatible         ="allwinner,sun50i-compass-list-para"
-compass_det_used    = 1
+compass_det_used    = 0
 lsm9ds0				= 1
 lsm303d           	= 0
 akm8963           	= 1
@@ -1132,9 +1132,9 @@ akm8963           	= 1
 ;         if register the sound card spdif.
 ;--------------------------------------------------------------------------------        
 [spdif]
-spdif_used      = 1
+spdif_used      = 0
 [sndspdif]
-sndspdif_used   = 1
+sndspdif_used   = 0
 ;----------------------------------------------------------------------------------
 ;		NOTE :Make sure daudio2_used = 0x1,sndhdmi_used = 0x1,
 ;         if register the sound card hdmi.
@@ -1375,7 +1375,7 @@ lv8_volt = 1100
 ;
 ;----------------------------------------------------------------------------------
 [s_uart0]
-s_uart0_used       = 1
+s_uart0_used       = 0
 s_uart0_tx         = port:PL02<2><default><default><default>
 s_uart0_rx         = port:PL03<2><default><default><default>
 
@@ -1407,7 +1407,7 @@ s_jtag0_tdi         = port:PL07<2><1><2><default>
 ;device have pin PA1 PA2
 ;----------------------------------------------------------------------------------
 [Vdevice]
-Vdevice_used        = 1
+Vdevice_used        = 0
 Vdevice_0           = port:PA01<5><1><2><default>
 Vdevice_1           = port:PA02<5><1><2><default>
 
