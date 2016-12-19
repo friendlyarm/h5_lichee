@@ -25,7 +25,7 @@
 modules.builtin
 *.elf
 *.bin
-*.gz
+#*.gz
 *.bz2
 *.lzma
 *.xz
@@ -97,6 +97,6 @@ skel/
 output/
 bImage
 *.swp
-rootfs.cpio.gz
+#rootfs.cpio.gz
 drivers/arisc/binary/arisc
 modules/eurasia_km/eurasiacon/binary2_sunxi_android_release/
