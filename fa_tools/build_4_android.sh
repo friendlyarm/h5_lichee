@@ -15,9 +15,17 @@ function pt_info()
     echo -e "\033[1;32mINFO: $*\033[0m"
 }
 
+function execute_cmd() 
+{
+    pt_info "==> Executing: '${@}'"
+    eval $@ || exit $?
+}
+
 pt_info "This script is only for ANDROID."
 cd ..
-(cd ./brandy && ./build.sh -p sun50iw2p1 && cd -)
-touch ./linux-3.10/.scmversion
-echo -e "1\n0\n" | ./build.sh config
-cd -
+ROOT=`pwd`
+execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
+execute_cmd "touch ./linux-3.10/.scmversion"
+execute_cmd "echo -e \"1\n0\n\" | ./build.sh config"
+cd ${ROOT}/fa_tools
+pt_info "build lichee for Android success"
