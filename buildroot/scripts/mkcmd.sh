@@ -863,7 +863,7 @@ function mkrootfs()
 {
     mk_info "build rootfs ..."
 
-    if [ ${LICHEE_PLATFORM} = "linux" -o  ${LICHEE_PLATFORM} = "eyeseelinux" ] ; then
+    if [ ${LICHEE_PLATFORM} = "eyeseelinux" ] ; then
         make O=${LICHEE_BR_OUT} -C ${LICHEE_BR_DIR} target-generic-getty-busybox
         [ $? -ne 0 ] && mk_error "build rootfs Failed" && return 1
         make O=${LICHEE_BR_OUT} -C ${LICHEE_BR_DIR} target-finalize
