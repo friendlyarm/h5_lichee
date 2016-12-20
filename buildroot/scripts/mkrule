@@ -56,4 +56,4 @@ sun8iw11p1_eyeseelinux                  sun8iw11p1_defconfig        sun8iw11p1sm
 
 sun50iw2p1_android                      sun50i_defconfig            sun50iw2p1smp_android_cheetah_defconfig
 sun50iw2p1_dragonboard                  sun50i_defconfig            sun50iw2p1smp_android_cheetah_defconfig
-sun50iw2p1_linux                        sun50i_defconfig            sun50iw2p1smp_defconfig
+sun50iw2p1_linux                        sun50i_defconfig            sun50iw2p1smp_linux_defconfig
