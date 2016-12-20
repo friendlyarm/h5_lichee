@@ -105,8 +105,8 @@ int saveenv(void)
 	printf("saveenv storage_type = %d\n", uboot_spare_head.boot_data.storage_type);
 	start = sunxi_partition_get_offset_byname(CONFIG_SUNXI_ENV_PARTITION);
 	if(!start){
-		printf("fail to find part named %s\n", CONFIG_SUNXI_ENV_PARTITION);
-		return -1;
+		start = 0x0;	// blk_size = 512byte, phy_addr = start + CONFIG_MMC_LOGICAL_OFFSET = 20Mbyte
+		printf("saveenv to logic blk %x without env partition\n", start);
 	}
 
 	ret = env_export(env_new);
@@ -132,9 +132,8 @@ static void flash_env_relocate_spec(int workmode)
 	{
 		start = sunxi_partition_get_offset_byname(CONFIG_SUNXI_ENV_PARTITION);
 		if(!start){
-			printf("fail to find part named %s\n", CONFIG_SUNXI_ENV_PARTITION);
-			use_default();
-			return;
+			start = 0x0;	// blk_size = 512byte, phy_addr = start + CONFIG_MMC_LOGICAL_OFFSET = 20Mbyte
+			printf("try to read logic blk %x without env partition\n", start);
 		}
 
 		if(!sunxi_flash_read(start, CONFIG_ENV_SIZE/512, buf))
