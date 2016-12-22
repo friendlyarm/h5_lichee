@@ -284,6 +284,7 @@
 #define CONFIG_CMD_SAVEENV
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
+	"fsck.repair=yes\0" \
 	"selinux=0\0" \
 	"bootdelay=1\0" \
 	"bootcmd=run setargs_mmc boot_normal\0" \
@@ -295,7 +296,7 @@
 	"setargs_nand=setenv bootargs console=${console} root=${nand_root} " \
 	"init=${init} loglevel=${loglevel} partitions=${partitions}\0" \
 	"setargs_mmc=setenv bootargs console=${console} root=${mmc_root} " \
-	"init=${init} loglevel=${loglevel} partitions=${partitions} selinux=${selinux}\0" \
+	"init=${init} loglevel=${loglevel} partitions=${partitions} selinux=${selinux} fsck.repair=${fsck.repair}\0" \
 	"boot_normal=fatload mmc 0:1 4007f800 boot.img;boota 4007f800\0" \
 	"boot_recovery=sunxi_flash read 4007f800 recovery;boota 4007f800\0" \
 	"boot_fastboot=fastboot\0"
