@@ -171,7 +171,7 @@ dram_tpr13   = 0x4002910
 ;------------------------------------------------------------------------------;
 [gmac0]
 gmac0_used         = 1
-phy-mode           = "mii"
+phy-mode           = "rgmii"
 gmac_power1        =
 gmac_power2        =
 gmac_power3        =
