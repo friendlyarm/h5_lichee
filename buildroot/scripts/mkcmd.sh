@@ -863,7 +863,19 @@ function mkrootfs()
 {
     mk_info "build rootfs ..."
 
-    if [ ${LICHEE_PLATFORM} = "eyeseelinux" ] ; then
+    if [ ${LICHEE_PLATFORM} = "linux" ]; then
+        if [ -e rootfs.ext4 ]; then
+            ln -s rootfs.ext4 ${LICHEE_PLAT_OUT}/rootfs.ext4
+            mk_info "use user's rootfs.ext4."
+        else
+            mk_info "use a fake rootfs.ext4."
+            cd ${LICHEE_PLAT_OUT} && dd if=/dev/zero of=rootfs.ext4 bs=1M count=1
+            if [ $? = 0 ] ; then
+                mkfs.ext4 rootfs.ext4 -F >/dev/null
+            fi
+            cd - > /dev/null
+        fi
+    elif [ ${LICHEE_PLATFORM} = "eyeseelinux" ] ; then
         make O=${LICHEE_BR_OUT} -C ${LICHEE_BR_DIR} target-generic-getty-busybox
         [ $? -ne 0 ] && mk_error "build rootfs Failed" && return 1
         make O=${LICHEE_BR_OUT} -C ${LICHEE_BR_DIR} target-finalize
