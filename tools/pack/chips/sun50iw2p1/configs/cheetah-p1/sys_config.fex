@@ -249,7 +249,7 @@ uart1_rts        = port:PG8<7><1><default><default>
 uart1_cts        = port:PG9<7><1><default><default>
 
 [uart2]
-uart2_used       = 0
+uart2_used       = 1
 uart2_port       = 2
 uart2_type       = 4
 uart2_tx         = port:PA0<2><1><default><default>
@@ -264,7 +264,7 @@ uart2_rts        = port:PA2<7><1><default><default>
 uart2_cts        = port:PA3<7><1><default><default>
 
 [uart3]
-uart3_used       = 0
+uart3_used       = 1
 uart3_port       = 3
 uart3_type       = 4
 uart3_tx         = port:PA13<2><1><default><default>
@@ -346,7 +346,7 @@ rtp_exchange_x_y_flag = 0
 ;----------------------------------------------------------------------------------
 [ctp]
 compatible			= "allwinner,sun50i-ctp-para"
-ctp_used            = 1
+ctp_used            = 0
 ctp_twi_id          = 0
 ctp_twi_addr        = 0x5d
 ctp_screen_max_x    = 1280
@@ -397,7 +397,7 @@ motor_shake         = port:power3<1><default><default><1>
 [nand0_para]
 nand0_support_2ch    = 0
 
-nand0_used          = 1
+nand0_used          = 0
 nand0_we            = port:PC00<2><0><1><default>
 nand0_ale           = port:PC01<2><0><1><default>
 nand0_cle           = port:PC02<2><0><1><default>
@@ -1428,7 +1428,7 @@ Vdevice_1           = port:PA02<5><1><2><default>
 ;----------------------------------------------------------------------------------
 [gpu_mali450_0]
 regulator_id      = "vdd-gpu"
-dvfs_status       = 0
+dvfs_status       = 1
 temp_ctrl_status  = 1
 scene_ctrl_status = 1
 
