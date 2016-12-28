@@ -479,6 +479,15 @@ config LEDS_BLINKM
 	  This option enables support for the BlinkM RGB LED connected
 	  through I2C. Say Y to enable support for the BlinkM LED.
 
+config LEDS_SUNXI
+    tristate "LED Support for GPIO connected LEDs on sunxi"
+    depends on LEDS_GPIO
+    select LEDS_TRIGGERS
+    select LEDS_TRIGGER_TIMER
+    help
+      This option enables support for the LEDs connected to GPIO
+      outputs on sunxi platform.
+
 comment "LED Triggers"
 source "drivers/leds/trigger/Kconfig"
 
