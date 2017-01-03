@@ -1527,6 +1527,7 @@
 			gmac_power1 = "axp81x_dldo2:2500000";
 			gmac_power2 = "axp81x_eldo2:1800000";
 			gmac_power3 = "axp81x_fldo1:1200000";
+			phy_power_on = <&pio PD 6 1 0 0 0>;
 			status = "disable";
 		};
 	};

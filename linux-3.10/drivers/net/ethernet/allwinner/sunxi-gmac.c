@@ -45,6 +45,8 @@
 #define EPHY_CLK "ephy"
 #endif
 
+#define PHY_POWER_ON 1
+
 #define DMA_DESC_RX	256
 #define DMA_DESC_TX	256
 #define BUDGET		(dma_desc_rx/4)
@@ -162,6 +164,9 @@ struct geth_priv {
 
 	spinlock_t lock;
 	spinlock_t tx_lock;
+#ifdef PHY_POWER_ON
+	unsigned int power_on_gpio;
+#endif
 };
 
 #ifdef CONFIG_GETH_PHY_POWER
@@ -825,6 +830,34 @@ static const struct dev_pm_ops geth_pm_ops = {
 static const struct dev_pm_ops geth_pm_ops;
 #endif /* CONFIG_PM */
 
+#ifdef PHY_POWER_ON
+void gmac_phy_power_on(struct geth_priv *priv)
+{
+	if (!priv)
+		return;
+
+	if (gpio_is_valid(priv->power_on_gpio)) {
+		gpio_request(priv->power_on_gpio, NULL);
+		gpio_direction_output(priv->power_on_gpio, 1);
+		gpio_set_value(priv->power_on_gpio, 1);
+		mdelay(10);
+	} else {
+		gpio_set_value(priv->power_on_gpio, 1);
+		mdelay(10);
+	}
+}
+
+void gmac_phy_power_off(struct geth_priv *priv)
+{
+	if (!priv)
+		return;
+
+	if (priv->power_on_gpio) {
+		gpio_set_value(priv->power_on_gpio, 0);
+	}
+	return;
+}
+#endif
 
 /*****************************************************************************
  *
@@ -1037,6 +1070,9 @@ static int geth_open(struct net_device *ndev)
 	struct geth_priv *priv = netdev_priv(ndev);
 	int ret = 0;
 
+#ifdef PHY_POWER_ON
+	gmac_phy_power_on(priv);
+#endif
 	ret = geth_power_on(priv);
 	if (ret) {
 		netdev_err(ndev, "Power on is failed\n");
@@ -1125,6 +1161,10 @@ static int geth_stop(struct net_device *ndev)
 
 	geth_clk_disable(priv);
 	geth_power_off(priv);
+
+#ifdef GMAC_PHY_POWER
+	gmac_phy_power_off(priv);
+#endif
 
 	netif_tx_lock_bh(ndev);
 	/* Release the DMA TX/RX socket buffers */
@@ -1726,6 +1766,11 @@ static int geth_script_parse(struct platform_device *pdev)
 	priv->phyrst = of_get_named_gpio_flags(np, "phy-rst", 0,
 						(enum of_gpio_flags *)&cfg);
 	priv->rst_active_low = cfg.data;
+
+#ifdef PHY_POWER_ON
+	priv->power_on_gpio = of_get_named_gpio(np, "phy_power_on", 0);
+#endif
+
 #endif
 
 	return 0;
