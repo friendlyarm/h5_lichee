@@ -715,7 +715,7 @@ function mkbr()
 
 function clbr()
 {
-    mk_info "build buildroot ..."
+    mk_info "clean buildroot ..."
 
     local build_script="scripts/build.sh"
     (cd ${LICHEE_BR_DIR} && [ -x ${build_script} ] && ./${build_script} "clean")
@@ -726,9 +726,9 @@ function clbr()
 function prepare_toolchain()
 {
     mk_info "prepare toolchain ..."
-    tooldir=${LICHEE_BR_OUT}/external-toolchain
+    tooldir=${LICHEE_TOP_DIR}/brandy/toolchain/gcc-aarch64/
     if [ ! -d ${tooldir} ] ; then
-        mkbr
+        (cd ${LICHEE_TOP_DIR}/brandy/ && ./build.sh -t)
     fi
 
     if ! echo $PATH | grep -q "${tooldir}" ; then
@@ -934,7 +934,7 @@ function mklichee()
 	mk_info "----------------------------------------"
 
 	check_env
-    mkbr && mkkernel && mkrootfs
+    mkkernel
     [ $? -ne 0 ] && return 1
 
 	printf "\033[0;31;1m----------------------------------------\033[0m\n"
