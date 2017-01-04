@@ -21,7 +21,7 @@ prepare_toolchain()
         local GCC="";
         local GCC_PREFIX="";
         local toolchain_archive_aarch64="./toolchain/gcc-linaro-aarch64.tar.xz";
-        local toolchain_archive_arm="./toolchain/gcc-linaro-arm.tar.xz";
+        local toolchain_archive_arm="./toolchain/gcc-linaro-arm-4.6.3.tar.xz";
         local tooldir_aarch64="./toolchain/gcc-aarch64";
         local tooldir_arm="./toolchain/gcc-arm";
 
@@ -40,6 +40,8 @@ prepare_toolchain()
 
 build_uboot()
 {
+    prepare_toolchain
+
 	if [ "x${PLATFORM}" = "xsun50iw1p1" ] || \
 	[ "x${PLATFORM}" = "xsun50iw2p1" ] || \
 	[ "x${PLATFORM}" = "xsun8iw10p1" ] || \
