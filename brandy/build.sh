@@ -27,12 +27,12 @@ prepare_toolchain()
 
         echo "Prepare toolchain ..."
 
-        if [ ! -d "${tooldir_aarch64}" ]; then
+        if [ ! -d "${tooldir_aarch64}" -o "`ls -A ${tooldir_aarch64} 2>/dev/null`" = "" ]; then
                 mkdir -p ${tooldir_aarch64} || exit 1
                 tar --strip-components=1 -xf ${toolchain_archive_aarch64} -C ${tooldir_aarch64} || exit 1
         fi
 
-        if [ ! -d "${tooldir_arm}" ]; then
+        if [ ! -d "${tooldir_arm}" -o "`ls -A ${tooldir_arm} 2>/dev/null`" = "" ]; then
                 mkdir -p ${tooldir_arm} || exit 1
                 tar --strip-components=1 -xf ${toolchain_archive_arm} -C ${tooldir_arm} || exit 1
         fi
@@ -71,7 +71,19 @@ build_uboot()
 	cd - 1>/dev/null
 }
 
-while getopts p:m:t OPTION
+clean_brandy()
+{
+    prepare_toolchain
+    cd arm-trusted-firmware-1.0/
+    make distclean
+    cd ..
+    cd u-boot-2014.07/
+    make distclean
+    cd ..
+    exit 0
+}
+
+while getopts p:m:tc OPTION
 do
 	case $OPTION in
 	p)
@@ -83,6 +95,9 @@ do
 	t)
 		prepare_toolchain
 		exit
+        ;;
+    c)
+        clean_brandy
 		;;
 	*) show_help
 		exit

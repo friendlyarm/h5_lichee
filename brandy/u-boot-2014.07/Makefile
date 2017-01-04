@@ -1285,6 +1285,7 @@ CLEAN_FILES += u-boot.lds include/bmp_logo.h include/bmp_logo_data.h \
 	       sunxi_spl/autoconf.mk* \
 	       sunxi_spl/boot0/boot0.lds \
 	       sunxi_spl/fes_init/fes_init.lds \
+	       sunxi_spl/sbrom/sboot.*
 
 # Directories & files removed with 'make clobber'
 CLOBBER_DIRS  += spl tpl
@@ -1361,6 +1362,7 @@ distclean: mrproper
 		-o -name '*.pyc' \) \
 		-type f -print | xargs rm -f
 	@rm -rf cur.log
+	@rm -rf *.bin
 
 backup:
 	F=`basename $(srctree)` ; cd .. ; \
