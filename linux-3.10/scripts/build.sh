@@ -79,9 +79,11 @@ gpu_message()
 
 build_gpu()
 {
-	GPU_TYPE=`fgrep CONFIG_SUNXI_GPU_TYPE ${LICHEE_KDIR}/.config | cut -d \" -f 2`
-	if [ "X$GPU_TYPE" = "XNone" -o "X$GPU_TYPE" = "X" ]; then
-	{
+    if [ -e ${LICHEE_KDIR}/.config ]; then
+	   GPU_TYPE=`fgrep CONFIG_SUNXI_GPU_TYPE ${LICHEE_KDIR}/.config | cut -d \" -f 2`
+    fi
+    if [ "X$GPU_TYPE" = "XNone" -o "X$GPU_TYPE" = "X" ]; then
+    {
 		gpu_message "No GPU type is configured in ${LICHEE_KDIR}/.config."
 		return
 	}
@@ -112,10 +114,12 @@ build_gpu()
 
 clean_gpu()
 {
-	GPU_TYPE=`fgrep CONFIG_SUNXI_GPU_TYPE ${LICHEE_KDIR}/.config | cut -d \" -f 2`
+    if [ -e ${LICHEE_KDIR}/.config ]; then
+	  	GPU_TYPE=`fgrep CONFIG_SUNXI_GPU_TYPE ${LICHEE_KDIR}/.config | cut -d \" -f 2`
+    fi
 	if [ "X$GPU_TYPE" = "XNone" -o "X$GPU_TYPE" = "X" ]; then
 	{
-		gpu_message "No GPU type is configured in .config."
+		#gpu_message "No GPU type is configured in .config."
 		return
 	}
 	fi
@@ -130,7 +134,8 @@ build_kernel()
     echo "Building kernel"
 
     cd ${LICHEE_KDIR}
-
+    touch .scmversion
+    
     rm -rf output/
     echo "${LICHEE_MOD_DIR}"
     mkdir -p ${LICHEE_MOD_DIR}
