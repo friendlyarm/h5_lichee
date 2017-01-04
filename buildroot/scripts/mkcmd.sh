@@ -942,14 +942,28 @@ function mklichee()
 	printf "\033[0;31;1m----------------------------------------\033[0m\n"
 }
 
+function clbrandy()
+{
+    cd ${LICHEE_TOP_DIR}/brandy
+    ./build.sh -c
+    cd - > /dev/null
+}
+
 function mkclean()
 {
+    clbrandy
     clkernel
 
-	mk_info "clean product output in ${LICHEE_PLAT_OUT} ..."
+	mk_info "clean product output ..."
 	cd ${LICHEE_PLAT_OUT}
 	ls | grep -v "buildroot" | xargs rm -rf
 	cd - > /dev/null
+    rm -rf ${LICHEE_TOP_DIR}/.buildconfig
+    rm -rf ${LICHEE_OUT_DIR}
+    rm -rf ${LICHEE_TOOLS_DIR}/pack/*.img
+    rm -rf ${LICHEE_TOOLS_DIR}/pack/out
+    rm -rf ${LICHEE_KERN_DIR}/output
+    (cd ${LICHEE_TOP_DIR}/brandy/pack_tools/ && find . -name "*\.[oa]" -exec rm {} \;)
 }
 
 function mkdistclean()
