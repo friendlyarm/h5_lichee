@@ -565,7 +565,7 @@ lcdd8               = port:PD20<7><0><default><default>
 lcdd9               = port:PD21<7><0><default><default>
 
 [hdmi]
-hdmi_used = 1
+hdmi_used = 0
 ;hdmi_power = "vcc3v3-hdmi"
 hdmi_hdcp_enable = 0
 hdmi_cts_compatibility = 0
@@ -1342,7 +1342,7 @@ regulator6      = "axpdummy_ldo6 none vcc-rtc vdd-cpus vcc-io vcc-efuse vcc-sdc 
 [dvfs_table]
 ;extremity_freq = 1344000000
 max_freq = 1008000000
-min_freq = 240000000
+min_freq = 120000000
 
 lv_count = 8
 lv1_freq = 1152000000
@@ -1410,42 +1410,6 @@ s_jtag0_tdi         = port:PL07<2><1><2><default>
 Vdevice_used        = 0
 Vdevice_0           = port:PA01<5><1><2><default>
 Vdevice_1           = port:PA02<5><1><2><default>
-
-;----------------------------------------------------------------------------------
-;mali450 parameters
-;regulator_id     : the regulator id GPU used.
-;dvfs_status      : dvfs status, if this is enabled, DVFS will work.
-;temp_ctrl_status : temperature control status, if this is enabled, the gpu frequency
-;                   will drop down if the temperature of gpu is too high.
-;scene_ctrl_status: scene control status, if this is enabled, android layer can ask
-;                   gpu driver to change frequency in certain scene.
-;max_level        : maximum level, which is used when thermal system does not restrict
-;                    GPU power consumption.
-;begin_level      : the corresponding frequency and voltage will be used during GPU
-;                    initialization.
-;lv<x>freq        : frequency in MHz of certain level.
-;lv<x>volt        : voltage in mV of certain level.
-;----------------------------------------------------------------------------------
-[gpu_mali450_0]
-regulator_id      = "vdd-gpu"
-dvfs_status       = 1
-temp_ctrl_status  = 1
-scene_ctrl_status = 1
-
-max_level   = 3
-begin_level = 3
-
-lv0_freq = 144
-lv0_volt = 1200
-
-lv1_freq = 264
-lv1_volt = 1200
-
-lv2_freq = 384
-lv2_volt = 1200
-
-lv3_freq = 456
-lv3_volt = 1200
 
 ;---------------------------------------------------------------------------------
 ;       used 1: box 0:pad
