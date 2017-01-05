@@ -73,7 +73,8 @@
 			compatible = "arm,cortex-a53","arm,armv8";
 			reg = <0x0 0x0>;
 			enable-method = "psci";
-			cpufreq_tbl = < 480000
+			cpufreq_tbl = < 240000
+					480000
 					648000
 					720000
 					816000
@@ -1401,8 +1402,8 @@
 			cluster_num = <1>;
 			state0 = <1008000 4>;
 			state1 = <816000 4>;
-			state2 = <648000 2>;
-			state3 = <480000 2>;
+			state2 = <816000 2>;
+			state3 = <648000 2>;
 			state4 = <480000 1>;
 		};
 
@@ -1427,17 +1428,17 @@
 
 				trips{
 					cpu_trip0:t0{
-						temperature = <90>;
+						temperature = <60>;
 						type = "passive";
 						hysteresis = <0>;
 					};
 					cpu_trip1:t1{
-						temperature = <100>;
+						temperature = <80>;
 						type = "passive";
 						hysteresis = <0>;
 					};
 					cpu_trip2:t2{
-						temperature = <110>;
+						temperature = <100>;
 						type = "passive";
 						hysteresis = <0>;
 					};
