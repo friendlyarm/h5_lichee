@@ -25,6 +25,7 @@
 #include <linux/uaccess.h>
 #include <linux/fs.h>
 #include <linux/miscdevice.h>
+#include <linux/gpio.h>
 
 #include "sunxi-sysinfo-user.h"
 
@@ -96,6 +97,28 @@ struct miscdevice soc_info_device = {
 	.fops  = &soc_info_ops,
 };
 
+unsigned int sunxi_get_board_vendor_id(void)
+{
+	u32 vid_cnt;
+	u32 i, pin_val, vid_val;
+	int gpio[2] = {(32*2+4), (32*2+7)};				// GPIOC4,GPIOC7
+
+	vid_cnt = 2;
+	vid_val = 0;
+	for (i=0; i<vid_cnt; i++) {
+		if (gpio_is_valid(gpio[i])) {
+			gpio_request(gpio[i], NULL);
+			gpio_direction_input(gpio[i]);
+			pin_val = gpio_get_value(gpio[i]);
+		} else {
+			printk(KERN_ERR"%s %d is invalid\n", __func__, gpio[i]);
+			return -1;
+		}
+		vid_val |= (pin_val<<i);
+	}
+	return vid_val;
+}
+
 static ssize_t sys_info_show(struct class *class,
 			     struct class_attribute *attr, char *buf)
 {
@@ -133,6 +156,10 @@ static ssize_t sys_info_show(struct class *class,
 	*(u32 *)(&tmpbuf[0]) = sunxi_get_soc_customerid();
 	size += sprintf(buf + size, "sunxi_customerid  : %x\n",
 				*(u32 *)(&tmpbuf[0]));
+	
+	/* Board vendor id*/
+	databuf[0] = sunxi_get_board_vendor_id();
+	size += sprintf(buf + size, "sunxi_board_id    : %d(%d)\n", (databuf[0]<0)?(-1):(databuf[0]&~(0xe0)), (databuf[0]<0)?(-1):((databuf[0]>>5)&0x01));
 	return size;
 }
 
