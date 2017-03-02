@@ -661,15 +661,17 @@ function do_finish()
 	fi
 
 	if [ "x${PACK_NO_IMG}" != "xno_img" ]; then
-		dragon image.cfg sys_partition.fex
-		if [ $? -eq 0 ]; then
-			if [ -e ${IMG_NAME} ]; then
-		        mv ${IMG_NAME} ../${IMG_NAME}
-		        echo '----------image is at----------'
-		        echo -e '\033[0;31;1m'
-		        echo ${ROOT_DIR}/${IMG_NAME}
-		        echo -e '\033[0m'
-		    fi
+		if [ "x${PACK_PLATFORM}" != "xlinux" ]; then
+			dragon image.cfg sys_partition.fex
+			if [ $? -eq 0 ]; then
+				if [ -e ${IMG_NAME} ]; then
+			        mv ${IMG_NAME} ../${IMG_NAME}
+			        echo '----------image is at----------'
+			        echo -e '\033[0;31;1m'
+			        echo ${ROOT_DIR}/${IMG_NAME}
+			        echo -e '\033[0m'
+			    fi
+			fi
 		fi
 	else
 		echo "not to pack img\n"
