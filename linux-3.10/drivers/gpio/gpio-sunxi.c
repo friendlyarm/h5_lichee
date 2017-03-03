@@ -573,16 +573,16 @@ static int sunxi_init_gpio_probe(struct platform_device *pdev)
 
 	if (of_property_read_u32(node, "easy_light_used", &easy_light_used)) {
 		easy_light_used = 0;
-		pr_err("failed to get easy_light_used assign\n");
+		pr_err("not get easy_light_used assign\n");
 	}
 	if (of_property_read_string(node, "normal_led", &normal_led_pin_str))
-		pr_err("failed to get normal led pin assign\n");
+		pr_err("not get normal led pin assign\n");
 
 	if (of_property_read_string(node, "standby_led", &standby_led_pin_str))
-		pr_err("failed to get standby led pin assign\n");
+		pr_err("not get standby led pin assign\n");
 
 	if (of_property_read_string(node, "network_led", &network_led_pin_str))
-		pr_err("failed to get standby led pin assign\n");
+		pr_err("not get standby led pin assign\n");
 
 	ret = of_property_read_u32(node, "gpio_num", &cnt);
 	if (ret || !cnt) {
