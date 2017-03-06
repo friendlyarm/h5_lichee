@@ -298,8 +298,8 @@ int sunxi_bmp_display(char *name)
 	printf("bmp_name=%s\n", bmp_name);
 
 	argv[0] = "fatload";
-	argv[1] = "sunxi_flash";
-	argv[2] = "0:0";
+	argv[1] = "mmc";
+	argv[2] = "0:1";
 	argv[3] = bmp_head;
 	argv[4] = bmp_name;
 	argv[5] = NULL;
