@@ -451,7 +451,7 @@ screen1_output_type      = 2
 screen1_output_mode      = 11
 
 dev0_output_type = 4
-dev0_output_mode = 4
+dev0_output_mode = 5
 dev0_screen_id = 0
 dev0_do_hpd = 1
 
