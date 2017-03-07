@@ -22,7 +22,7 @@ function execute_cmd()
 
 function usage()
 {
-    echo -e "\033[1;32mUsage: `basename $0` -b board[nanopi-neo2|nanopi-m1-plus2] -p platform[linux|android] -t target[all|u-boot|kernel|pack]\033[0m"
+    echo -e "\033[1;32mUsage: `basename $0` -b board[${H5_BOARD}] -p platform[${H5_PLATFORM}] -t target[${H5_TARGET}]\033[0m"
     exit 1
 }
 
@@ -48,6 +48,7 @@ function parse_arg()
                     fi
                 done
                 if [ ${FOUND} -eq 0 ]; then
+                    pt_error "unsupported board"
                     usage
                 fi
                 ;;
@@ -63,6 +64,7 @@ function parse_arg()
                     fi
                 done
                 if [ ${FOUND} -eq 0 ]; then
+                    pt_error "unsupported platform"
                     usage
                 fi
                 ;;
@@ -78,6 +80,7 @@ function parse_arg()
                     fi
                 done
                 if [ ${FOUND} -eq 0 ]; then
+                    pt_error "unsupported target"
                     usage
                 fi
                 ;;
@@ -131,11 +134,19 @@ function build_lichee_4_android()
     pt_info "build and pack lichee for ANDROID platform success"
 }
 
+function build_clean()
+{
+    pt_info "cleaning lichee"
+    cd ${PRJ_ROOT_DIR}
+    execute_cmd "./build.sh -p sun50iw2p1 -k linux-3.10 -b cheetah-p1 -m clean"
+    pt_info "clean lichee success"
+}
+
 cd ..
 PRJ_ROOT_DIR=`pwd`
 H5_BOARD="nanopi-neo2|nanopi-m1-plus2"
 H5_PLATFORM="linux|android"
-H5_TARGET="all|u-boot|kernel|pack"
+H5_TARGET="all|u-boot|kernel|pack|clean"
 BOARD_NAME=none
 PLATFORM=linux
 TARGET=all
@@ -161,6 +172,9 @@ if [ "x${PLATFORM}" = "xlinux" ]; then
         exit 0
     elif [ "x${TARGET}" = "xall" ]; then
          build_lichee_4_linux
+        exit 0
+    elif [ "x${TARGET}" = "xclean" ]; then
+        build_clean
         exit 0
     else
         pt_error "unsupported target"
