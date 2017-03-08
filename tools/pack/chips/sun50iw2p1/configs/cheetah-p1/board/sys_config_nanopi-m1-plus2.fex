@@ -929,7 +929,7 @@ rndis_wceis         = 1
 ;--------------------------------
 [usbc1]
 usbc1_used          = 1
-usb_drv_vbus_gpio   = port:PL02<1><0><default><0>
+usb_drv_vbus_gpio   = 
 usb_host_init_state = 1
 usb_regulator_io    = "nocare"
 usb_wakeup_suspend  = 0
@@ -938,7 +938,7 @@ usb_wakeup_suspend  = 0
 ;---       USB2 CONFIG
 ;--------------------------------
 [usbc2]
-usbc2_used          = 0
+usbc2_used          = 1
 usb_drv_vbus_gpio   =
 usb_host_init_state = 1
 usb_regulator_io    = "nocare"
