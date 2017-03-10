@@ -353,7 +353,7 @@ build_ramfs()
 	if [ ! -f arch/${ARCH}/boot/dts/${LICHEE_CHIP}-${LICHEE_BOARD}.dtb ]; then
 		echo "sunxi.dtb" > output/sunxi.dtb
 	else
-		cp arch/${ARCH}/boot/dts/${LICHEE_CHIP}-${LICHEE_BOARD}.dtb output/sunxi.dtb
+		cp -v arch/${ARCH}/boot/dts/${LICHEE_CHIP}-${LICHEE_BOARD}.dtb output/sunxi.dtb
 	fi
 	cp output/sunxi.dtb    ${LICHEE_PLAT_OUT}
 }
