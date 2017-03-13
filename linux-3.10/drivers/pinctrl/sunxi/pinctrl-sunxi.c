@@ -1217,7 +1217,7 @@ static ssize_t sunxi_pin_configure_write(struct file *file,	const char __user *u
 
 	err=sscanf(user_buf, "%s %u %u %u %u", sunxi_dbg_pinname,
 			&function, &data, &dlevel, &pull);
-	if(err != 6)
+	if(err != 5)
 		return -EINVAL;
 
 	if (function > 7) {
@@ -1244,6 +1244,7 @@ static ssize_t sunxi_pin_configure_write(struct file *file,	const char __user *u
 	}
 	sunxi_dbg_level = dlevel;
 
+#if 0
 	pctldev = get_pinctrl_dev_from_devname(dev_name);
 	if (!pctldev) {
 		return -EINVAL;
@@ -1254,6 +1255,7 @@ static ssize_t sunxi_pin_configure_write(struct file *file,	const char __user *u
 		return -EINVAL;
 	}
 	pctl = pinctrl_dev_get_drvdata(pctldev);
+#endif
 
 	/* set function value*/
 	config = SUNXI_PINCFG_PACK(SUNXI_PINCFG_TYPE_FUNC,function);
