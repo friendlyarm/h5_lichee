@@ -496,7 +496,7 @@
 			pinctrl-1 = <&uart1_pins_b>;
 			uart1_port = <1>;
 			uart1_type = <4>;
-			status = "disabled";
+			status = "okay";
 		};
 
 		uart2: uart@01c28800 {
@@ -510,7 +510,7 @@
 			pinctrl-1 = <&uart2_pins_b>;
 			uart2_port = <2>;
 			uart2_type = <4>;
-			status = "disabled";
+			status = "okay";
 		};
 
 		uart3: uart@01c28c00 {
@@ -524,7 +524,7 @@
 			pinctrl-1 = <&uart3_pins_b>;
 			uart3_port = <3>;
 			uart3_type = <4>;
-			status = "disabled";
+			status = "okay";
 		};
 
 		twi0: twi@0x01c2ac00{
@@ -720,7 +720,7 @@
 			      <0x0 0x01f015c0 0x0 0x0>;/*analog baseadress*/
 			clocks = <&clk_pll_audio>,<&clk_adda>;
 			/*gpio-spk=<&pio 6 7 0>;*/
-			gpio-spk = <&pio PA 16 1 1 1 1>;
+			/*gpio-spk = <&pio PA 16 1 1 1 1>;*/
 
 			spkervol =  <0x1f>;
 			maingain =  <0x4>;

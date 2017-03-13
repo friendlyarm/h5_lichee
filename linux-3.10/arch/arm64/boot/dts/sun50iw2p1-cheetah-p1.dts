@@ -23,29 +23,29 @@
 	wlan:wlan {
 		compatible = "allwinner,sunxi-wlan";
 		clocks = <&clk_losc_out>;
-		wlan_power = "vcc-wifi";
-		wlan_io_regulator = "vcc-wifi-io";
+		//wlan_power = "vcc-wifi";
+		//wlan_io_regulator = "vcc-wifi-io";
 		wlan_busnum = <1>;
-		wlan_regon = <&r_pio PL 2 1 1 1 0>;
-		wlan_en = <&r_pio PL 7 1 1 1 0>;
-		wlan_hostwake = <&r_pio PL 3 6 0 0 0>;
+		//wlan_regon = <&r_pio PL 2 1 1 1 0>;			// define in sys_config.fex
+		//wlan_en = <&r_pio PL 7 1 1 1 0>;
+		//wlan_hostwake = <&r_pio PL 3 6 0 0 0>;
 		status = "okay";
 	};
 
 	bt:bt {
 		compatible = "allwinner,sunxi-bt";
 		clocks = <&clk_losc_out>;
-		bt_power = "vcc-wifi";
-		bt_io_regulator = "vcc-wifi-io";
-		bt_rst_n = <&r_pio PL 4 1 1 1 0>;
+		//bt_power = "vcc-wifi";
+		//bt_io_regulator = "vcc-wifi-io";
+		//bt_rst_n = <&r_pio PL 4 1 1 1 0>;
 		status = "okay";
 	};
 
 	btlpm:btlpm {
 		compatible = "allwinner,sunxi-btlpm";
-		uart_index = <1>;
-		bt_wake = <&r_pio PL 6 1 1 1 1>;
-		bt_hostwake = <&r_pio PL 5 6 0 0 0>;
+		uart_index = <3>;
+		//bt_wake = <&r_pio PL 6 1 1 1 1>;
+		//bt_hostwake = <&r_pio PL 5 6 0 0 0>;
 		status = "okay";
 	};
 };
