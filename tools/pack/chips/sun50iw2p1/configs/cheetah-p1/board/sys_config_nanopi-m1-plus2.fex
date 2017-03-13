@@ -1038,7 +1038,7 @@ bt_rst_n            = port:PG13<1><default><default><0>
 ;bt_hostwake:       bt device wake-up host
 ;--------------------------------------------------------------------------------
 [btlpm]
-btlpm_used          = 1
+btlpm_used          = 0
 uart_index          = 3
 bt_wake             = port:PA08<1><default><default><0>
 bt_hostwake         = port:PA07<0><default><default><0>
