@@ -2,13 +2,13 @@
 #include <linux/list.h>
 #include <linux/version.h>
 
-#if 1
+#if 0
 #define RTKBT_DBG(fmt, arg...) printk(KERN_INFO "rtk_btcoex: " fmt "\n" , ## arg)
 #else
 #define RTKBT_DBG(fmt, arg...)
 #endif
 
-#if 1
+#if 0
 #define RTKBT_ERR(fmt, arg...) printk(KERN_ERR "rtk_btcoex: " fmt "\n" , ## arg)
 #else
 #define RTKBT_ERR(fmt, arg...)
