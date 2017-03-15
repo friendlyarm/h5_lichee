@@ -110,7 +110,7 @@ function  build_kernel_4_linux()
 {
     pt_info "building linux kernel"
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config && ./build.sh pack"
+    execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
     pack_lichee
     pt_info "build and pack linux kernel success"
 }
@@ -120,7 +120,7 @@ function  build_lichee_4_linux()
     pt_info "building lichee for LINUX platform"
     cd ${PRJ_ROOT_DIR}
     execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
-    execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config && ./build.sh pack"
+    execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
     pack_lichee
     pt_info "build and pack lichee for LINUX platform success"
 }

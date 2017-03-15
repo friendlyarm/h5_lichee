@@ -355,7 +355,7 @@ build_ramfs()
 	else
 		cp -v arch/${ARCH}/boot/dts/${LICHEE_CHIP}-${LICHEE_BOARD}.dtb output/sunxi.dtb
 	fi
-	cp output/sunxi.dtb    ${LICHEE_PLAT_OUT}
+	cp -v output/sunxi.dtb    ${LICHEE_PLAT_OUT}
 }
 
 gen_output()
