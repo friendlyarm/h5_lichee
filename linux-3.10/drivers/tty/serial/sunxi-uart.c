@@ -1350,6 +1350,7 @@ static int sw_uart_probe(struct platform_device *pdev)
 	struct resource *res;
 	char uart_para[16] = {0};
 	int ret = -1;
+	int uart3_cts, uart3_rts, i;
 
 	pdev->id = of_alias_get_id(np, "serial");
 	if (pdev->id < 0) {
@@ -1416,6 +1417,20 @@ static int sw_uart_probe(struct platform_device *pdev)
 	if (ret) {
 		SERIAL_MSG("uart%d error to get type property\n", pdev->id);
 		return -EINVAL;
+	}
+	if (port->line == 3 && pdata->io_num == 4) {
+		uart3_cts = 15;		// PA15
+		uart3_rts = 16;		// PA16
+		for (i=uart3_cts; i<=uart3_rts; i++) {
+			if (gpio_is_valid(i)) {
+				gpio_request(i, "uart3_cts_rts");
+				gpio_direction_output(i, 0);
+				gpio_set_value(i, 0);
+			} else {
+				SERIAL_MSG("uart%d error to set rts/cts\n", pdev->id);
+				return -EINVAL;
+			}
+		}
 	}
 
 	if (of_property_read_bool(np, "linux,rs485-enabled-at-boot-time"))

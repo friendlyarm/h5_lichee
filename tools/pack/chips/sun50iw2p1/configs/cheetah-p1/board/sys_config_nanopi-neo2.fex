@@ -1342,7 +1342,7 @@ regulator6      = "axpdummy_ldo6 none vcc-rtc vdd-cpus vcc-io vcc-efuse vcc-sdc 
 [dvfs_table]
 ;extremity_freq = 1344000000
 max_freq = 1008000000
-min_freq = 120000000
+min_freq = 240000000
 
 lv_count = 8
 lv1_freq = 1152000000

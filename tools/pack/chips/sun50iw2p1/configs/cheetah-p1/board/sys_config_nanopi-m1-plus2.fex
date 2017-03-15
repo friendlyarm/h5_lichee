@@ -267,10 +267,8 @@ uart2_cts        = port:PA3<7><1><default><default>
 uart3_used       = 1
 uart3_port       = 3
 uart3_type       = 4
-uart3_tx         = port:PA13<2><1><default><default>
-uart3_rx         = port:PA14<2><1><default><default>
-uart3_rts        = port:PA15<2><1><default><default>
-uart3_cts        = port:PA16<2><1><default><default>
+uart3_tx         = port:PA13<3><1><default><default>
+uart3_rx         = port:PA14<3><1><default><default>
 
 [uart3_suspend]
 uart3_tx         = port:PA13<7><1><default><default>
@@ -929,7 +927,7 @@ rndis_wceis         = 1
 ;--------------------------------
 [usbc1]
 usbc1_used          = 1
-usb_drv_vbus_gpio   = port:PL02<1><0><default><0>
+usb_drv_vbus_gpio   = 
 usb_host_init_state = 1
 usb_regulator_io    = "nocare"
 usb_wakeup_suspend  = 0
@@ -938,7 +936,7 @@ usb_wakeup_suspend  = 0
 ;---       USB2 CONFIG
 ;--------------------------------
 [usbc2]
-usbc2_used          = 0
+usbc2_used          = 1
 usb_drv_vbus_gpio   =
 usb_host_init_state = 1
 usb_regulator_io    = "nocare"
@@ -1012,11 +1010,10 @@ wlan_used           = 1
 wlan_busnum         = 1
 wlan_usbnum         = 3
 ;clocks             = "&clk_losc_out"
-wlan_power          = "vcc-wifi"
-wlan_io_regulator   = "vcc-wifi-io"
-wlan_en             = port:PL07<1><default><default><0>
-wlan_regon          = port:PL03<1><default><default><0>
-wlan_hostwake       = port:PA11<6><default><default><0>
+;wlan_power          = "vcc-wifi"
+;wlan_io_regulator   = "vcc-wifi-io"
+wlan_regon          = port:PL07<1><default><default><0>
+wlan_hostwake       = port:PG10<0><default><default><0>
 
 ;--------------------------------------------------------------------------------
 ;bluetooth configuration
@@ -1029,9 +1026,9 @@ wlan_hostwake       = port:PA11<6><default><default><0>
 [bt]
 bt_used             = 1
 ;clocks             = "&clk_losc_out"
-bt_power            = "vcc-wifi"
-bt_io_regulator     = "vcc-wifi-io"
-bt_rst_n            = port:PL01<1><default><default><0>
+;bt_power            = "vcc-wifi"
+;bt_io_regulator     = "vcc-wifi-io"
+bt_rst_n            = port:PG13<1><default><default><0>
 
 ;--------------------------------------------------------------------------------
 ;bluetooth lpm configuration
@@ -1041,10 +1038,10 @@ bt_rst_n            = port:PL01<1><default><default><0>
 ;bt_hostwake:       bt device wake-up host
 ;--------------------------------------------------------------------------------
 [btlpm]
-btlpm_used          = 1
-uart_index          = 1
-bt_wake             = port:PA12<1><default><default><1>
-bt_hostwake         = port:PL06<6><default><default><0>
+btlpm_used          = 0
+uart_index          = 3
+bt_wake             = port:PA08<1><default><default><0>
+bt_hostwake         = port:PA07<0><default><default><0>
 
 ;--------------------------------------------------------------------------------
 ;3G configuration
@@ -1248,7 +1245,7 @@ adchpf_cfg =   0x0
 dacdrc_cfg =   0x0
 dachpf_cfg =   0x0
 pa_sleep_time = 0x32
-gpio-spk = port:PA16<1><1><default><default>
+;gpio-spk = port:PA16<1><1><default><default>
 
 ;----------------------------------------------------------------------------------
 ;ir --- infra remote configuration
@@ -1344,7 +1341,7 @@ regulator6      = "axpdummy_ldo6 none vcc-rtc vdd-cpus vcc-io vcc-efuse vcc-sdc 
 [dvfs_table]
 ;extremity_freq = 1344000000
 max_freq = 1008000000
-min_freq = 120000000
+min_freq = 240000000
 
 lv_count = 8
 lv1_freq = 1152000000
@@ -1466,6 +1463,6 @@ pmukey_used = 0
 ;	led when box into box standby, the gpio is only support PL and AXP gpio(0/1)
 ;---------------------------------------------------------------------------------
 [box_standby_led]
-gpio0		=  port:PL10<1><default><default><1>
-gpio1		=  port:PA15<1><default><default><0>
+;gpio0		=  port:PL10<1><default><default><1>
+;gpio1		=  port:PA15<1><default><default><0>
 
