@@ -359,7 +359,7 @@ static irqreturn_t sunxi_mmc_finalize_request(struct sunxi_mmc_host *host)
 	mmc_writel(host, REG_IDIE, 0);
 
 	if (host->int_sum & SDXC_INTERRUPT_ERROR_BIT) {
-		sunxi_mmc_dump_errinfo(host);
+		// sunxi_mmc_dump_errinfo(host);			// fix me
 		if ((host->ctl_spec_cap & SUNXI_SC_EN_RETRY) &&  data) {
 				host->mrq_retry = mrq;
 				host->errno_retry = host->int_sum & SDXC_INTERRUPT_ERROR_BIT;
