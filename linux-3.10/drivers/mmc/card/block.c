@@ -2029,7 +2029,17 @@ static struct mmc_blk_data *mmc_blk_alloc_req(struct mmc_card *card,
 	 * index anymore so we keep track of a name index.
 	 */
 	if (!subname) {
-		md->name_idx = find_first_zero_bit(name_use, max_devices);
+		if (card->host->caps2 & MMC_CAP2_BOOT_DEVICE) {
+			md->name_idx = 0;
+		} else {
+			md->name_idx = find_first_zero_bit(name_use, max_devices);
+
+			/* Reserve mmcblk0 for boot device */
+			if (md->name_idx == 0) {
+				__set_bit(0, name_use);
+				md->name_idx++;
+			}
+		}
 		__set_bit(md->name_idx, name_use);
 	} else
 		md->name_idx = ((struct mmc_blk_data *)

@@ -871,6 +871,7 @@
 		sdc2: sdmmc@01C11000 {
 			compatible = "allwinner,sunxi-mmc-v4p5x";
 			device_type = "sdc2";
+			boot_device = <0>;
 			reg = <0x0 0x01C11000 0x0 0x1000>;
 			interrupts = <GIC_SPI 62 0x0104>;  /*  */
 			clocks = <&clk_hosc>,<&clk_pll_periph1x2>,<&clk_sdmmc2_mod>,<&clk_sdmmc2_bus>,<&clk_sdmmc2_rst>;
@@ -925,6 +926,7 @@
 		sdc0: sdmmc@01c0f000 {
 			compatible = "allwinner,sunxi-mmc-v4p1x";
 			device_type = "sdc0";
+			boot_device = <0>;
 			reg = <0x0 0x01c0f000 0x0 0x1000>; /* only sdmmc0 */
 			interrupts = <GIC_SPI 60 0x0104>;  /*  */
 			clocks = <&clk_hosc>,<&clk_pll_periph1x2>,<&clk_sdmmc0_mod>,<&clk_sdmmc0_bus>,<&clk_sdmmc0_rst>;
@@ -966,6 +968,7 @@
 		sdc1: sdmmc@1C10000 {
 			compatible = "allwinner,sunxi-mmc-v4p1x";
 			device_type = "sdc1";
+			boot_device = <0>;
 			reg = <0x0 0x1C10000 0x0 0x1000>;
 			interrupts = <GIC_SPI 61 0x0104>;  /*  */
 			clocks = <&clk_hosc>,<&clk_pll_periph1x2>,<&clk_sdmmc1_mod>,<&clk_sdmmc1_bus>,<&clk_sdmmc1_rst>;

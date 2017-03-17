@@ -589,7 +589,7 @@ int update_fdt_para_for_kernel(void* dtb_base)
 	int nodeoffset = 0;
 	uint storage_type = 0;
 
-
+	printf("update_fdt_para_for_kernel\n");
 	storage_type = uboot_spare_head.boot_data.storage_type;
 
 	//fix nand&sdmmc
@@ -618,7 +618,7 @@ int update_fdt_para_for_kernel(void* dtb_base)
 			else
 			{
 				disable_node("nand0");
-				disable_node("mmc2");
+				// disable_node("mmc2");
 				disable_node("mmc3");
 			}
 		}
@@ -627,7 +627,25 @@ int update_fdt_para_for_kernel(void* dtb_base)
 			break;
 
 	}
-
+	// set up boot device
+	switch(storage_type)
+	{
+		case STORAGE_SD:
+			nodeoffset = fdt_path_offset(dtb_base, "mmc0");				// SD card
+			fdt_setprop_u32(dtb_base,nodeoffset, "boot_device", 1);
+			nodeoffset = fdt_path_offset(dtb_base, "mmc2");				// eMMC
+			fdt_setprop_u32(dtb_base,nodeoffset, "boot_device", 0);
+			break;
+		case STORAGE_EMMC:
+			nodeoffset = fdt_path_offset(dtb_base, "mmc0");
+			fdt_setprop_u32(dtb_base,nodeoffset, "boot_device", 0);
+			nodeoffset = fdt_path_offset(dtb_base, "mmc2");
+			fdt_setprop_u32(dtb_base,nodeoffset, "boot_device", 1);
+			break;
+		default:
+			break;
+	}		
+	
 	//fix memory
 	ret = fdt_fixup_memory(dtb_base, gd->bd->bi_dram[0].start ,gd->bd->bi_dram[0].size);
 	if(ret < 0)

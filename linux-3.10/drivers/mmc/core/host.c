@@ -321,6 +321,7 @@ void mmc_of_parse(struct mmc_host *host)
 	struct gpio_config flags;
 #endif
 	int len, ret, gpio;
+	u32 boot_device;
 
 	if (!host->parent || !host->parent->of_node)
 		return;
@@ -465,6 +466,14 @@ void mmc_of_parse(struct mmc_host *host)
 
 	if (of_find_property(np, "mmc-cache-ctrl", &len))
 		host->caps2 |= MMC_CAP2_CACHE_CTRL;	
+
+	if (!of_property_read_u32(np, "boot_device", &boot_device)) {
+		if (boot_device == 1) {
+			host->caps2 |= MMC_CAP2_BOOT_DEVICE;
+		} else {
+			host->caps2 &= ~(MMC_CAP2_BOOT_DEVICE);
+		}
+	}
 }
 
 EXPORT_SYMBOL(mmc_of_parse);

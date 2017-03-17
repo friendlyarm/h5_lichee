@@ -288,6 +288,7 @@ struct mmc_host {
 #define MMC_CAP2_HS400_1_2V	(1 << 16)	/* Can support HS400 1.2V */
 #define MMC_CAP2_HS400		(MMC_CAP2_HS400_1_8V | \
 				 MMC_CAP2_HS400_1_2V)
+#define MMC_CAP2_BOOT_DEVICE	(1 << 31)	/* Boot from this device */
 
 #define MMC_SUNXI_CAP3_DAT3_DET	(1 << 0)
 	u32 		sunxi_caps3;
