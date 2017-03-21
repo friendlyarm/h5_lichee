@@ -1132,9 +1132,9 @@ akm8963           	= 1
 ;         if register the sound card spdif.
 ;--------------------------------------------------------------------------------        
 [spdif]
-spdif_used      = 0
+spdif_used      = 1
 [sndspdif]
-sndspdif_used   = 0
+sndspdif_used   = 1
 ;----------------------------------------------------------------------------------
 ;		NOTE :Make sure daudio2_used = 0x1,sndhdmi_used = 0x1,
 ;         if register the sound card hdmi.
@@ -1246,7 +1246,7 @@ adchpf_cfg =   0x0
 dacdrc_cfg =   0x0
 dachpf_cfg =   0x0
 pa_sleep_time = 0x32
-gpio-spk = port:PA16<1><1><default><default>
+;gpio-spk = port:PA16<1><1><default><default>
 
 ;----------------------------------------------------------------------------------
 ;ir --- infra remote configuration
