@@ -79,10 +79,33 @@ void main( void )
 	__u32 fel_flag;
 	__u32 boot_cpu=0;
 	int use_monitor = 0;
+	int card_num, mmc_config_addr;
+	__u32 priv_info[15]={ 0xffffffff,
+					  	0xff20ffff,
+					  	0xffffffff,
+					  	0xff121eff,
+					  	0xffffffff,
+					  	0xffffffff,
+					  	0xffffffff,
+					  	0xffffffff,
+					  	0xffffffff,
+					  	0xffffffff,
+					  	0xffffffff,
+					  	0xffffff00,
+					  	0x000000ff,
+					  	0x08000000,
+					  	0x08000000};
 
 	timer_init();
 	sunxi_serial_init( BT0_head.prvt_head.uart_port, (void *)BT0_head.prvt_head.uart_ctrl, 6 );
 	set_debugmode_flag();
+
+#define SDMMC_PRIV_INFO_ADDR_OFFSET (128)
+	card_num = BT0_head.boot_head.platform[0] & 0xf;
+	mmc_config_addr = (int)(BT0_head.prvt_head.storage_data) + SDMMC_PRIV_INFO_ADDR_OFFSET;
+	if (card_num == 2) {
+		memcpy((void *)mmc_config_addr, (void *)&priv_info, sizeof(priv_info));
+	}
 	printf("HELLO! BOOT0 is starting!\n");
 	printf("boot0 commit : %s \n",boot0_hash_value);
 	print_version();
