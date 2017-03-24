@@ -318,6 +318,24 @@ static int initr_env(void)
 	return 0;
 }
 
+static int init_env_boot_mmc(void)
+{
+	/* initialize environment boot_mmc, must after initr_env */
+	char storage_type_buf[24] = {0};
+	char boot_mmc_buf[24] = {0};
+
+	sprintf(storage_type_buf, "%d", uboot_spare_head.boot_data.storage_type);
+	if (setenv("storage_type", storage_type_buf))
+		printf("setenv storage_type=%s fail\n", storage_type_buf);
+	if (uboot_spare_head.boot_data.storage_type == 1)
+		sprintf(boot_mmc_buf, "%s", "0");	
+	else
+		sprintf(boot_mmc_buf, "%s", "2");
+	if (setenv("boot_mmc", boot_mmc_buf))
+		printf("setenv boot_mmc=%s fail\n", boot_mmc_buf);
+	return 0;
+}
+
 static int initr_jumptable(void)
 {
 	jumptable_init();
@@ -559,6 +577,7 @@ init_fnc_t init_sequence_r[] = {
 #endif
 	PowerCheck,
 	initr_env,
+	init_env_boot_mmc,
 	initr_sunxi_base,
 #ifdef CONFIG_SUNXI_SECURE_STORAGE
 	sunxi_widevine_keybox_install,

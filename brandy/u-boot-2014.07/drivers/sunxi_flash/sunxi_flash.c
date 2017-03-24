@@ -396,6 +396,7 @@ int sunxi_flash_handle_init(void)
 	int workmode = 0;
 	int storage_type = 0;
 	int state = 0;
+	char cmd[64];
 	
 	workmode     = uboot_spare_head.boot_data.work_mode;
 	storage_type = uboot_spare_head.boot_data.storage_type;
@@ -418,6 +419,11 @@ int sunxi_flash_handle_init(void)
 	}
 	//init blk dev for fat
 	sunxi_flash_init_uboot(0);
+
+	// alwasy mmc dev X(boot device)
+	sprintf(cmd, "mmc dev %d", storage_type == 1 ? 0:2);
+	if (run_command(cmd, 0))
+		printf("run cmd fail:%s\n", cmd);
 
 	return state;
 }

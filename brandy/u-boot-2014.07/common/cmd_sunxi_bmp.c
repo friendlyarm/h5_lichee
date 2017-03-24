@@ -299,7 +299,16 @@ int sunxi_bmp_display(char *name)
 
 	argv[0] = "fatload";
 	argv[1] = "mmc";
-	argv[2] = "0:1";
+	if (uboot_spare_head.boot_data.storage_type == 1) {
+		argv[2] = "0:1";		// boot from SDcard
+	}
+	else if (uboot_spare_head.boot_data.storage_type == 2) {
+		argv[2] = "2:1";		// boot from eMMC
+	}
+	else {
+		printf("Unknown boot device, will load bootlogo in mmc 0:1");
+		argv[2] = "0:1";
+	}
 	argv[3] = bmp_head;
 	argv[4] = bmp_name;
 	argv[5] = NULL;

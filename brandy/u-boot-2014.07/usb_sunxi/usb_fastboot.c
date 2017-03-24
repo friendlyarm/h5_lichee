@@ -600,20 +600,25 @@ static int __flash_to_part(char *name)
         return 0;
     }
 
+	sprintf(cmd, "mmc dev %d", uboot_spare_head.boot_data.storage_type == 1 ? 0:2);
+	if (run_command(cmd, 0))
+		printf("run cmd fail:%s\n", cmd);
 	if (!strcmp(name, "boot0")) {
 		start = 16;
 		part_sectors = 64;
 		memset(cmd, 0, 64);
 		sprintf(cmd, "mmc write %x 10 40", (int)addr);
 		printf("%s", cmd);
-		run_command(cmd, 0);
+		if (run_command(cmd, 0))
+			printf("run cmd fail:%s\n", cmd);
 	} else if (!strcmp(name, "boot_package")) {
 		start = 32800;
 		part_sectors=2272;
 		memset(cmd, 0, 64);
 		sprintf(cmd, "mmc write %x 8020 8E0", (int)addr);
 		printf("%s", cmd);
-		run_command(cmd, 0);
+		if (run_command(cmd, 0))
+			printf("run cmd fail:%s\n", cmd);
 	} else {
 		if((!start) || (!part_sectors))
 		{
