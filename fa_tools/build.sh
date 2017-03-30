@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LINUX_PLAT="LINUX platform"
+ANDROID_PLAT="ANDROID platform"
 function pt_error()
 {
     echo -e "\033[1;31mERROR: $*\033[0m"
@@ -91,55 +93,68 @@ function parse_arg()
     IFS=${OLD_IFS}
 }
 
-function pack_lichee()
+function pack_lichee_4_linux()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "./build.sh pack"    
+    execute_cmd "./build.sh pack" 
 }
 
-function build_uboot()
+function build_uboot_4_linux()
 {
-    pt_info "building u-boot"
     cd ${PRJ_ROOT_DIR}
     execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
-    pack_lichee
-    pt_info "build and pack u-boot success"    
+    pack_lichee_4_linux
+    pt_info "build and pack u-boot for ${LINUX_PLAT} success"    
 }
 
 function  build_kernel_4_linux()
 {
-    pt_info "building linux kernel"
     cd ${PRJ_ROOT_DIR}
     execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
-    pack_lichee
-    pt_info "build and pack linux kernel success"
+    pack_lichee_4_linux
+    pt_info "build and pack linux kernel for ${LINUX_PLAT} success"
 }
 
 function  build_lichee_4_linux()
 {
-    pt_info "building lichee for LINUX platform"
     cd ${PRJ_ROOT_DIR}
     execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
     execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
-    pack_lichee
-    pt_info "build and pack lichee for LINUX platform success"
+    pack_lichee_4_linux
+    pt_info "build and pack lichee for ${LINUX_PLAT} success"
+}
+
+function build_clean_4_linux()
+{
+    cd ${PRJ_ROOT_DIR}
+    execute_cmd "./build.sh -p sun50iw2p1 -k linux-3.10 -b cheetah-p1 -m clean"
+    pt_info "clean lichee for ${LINUX_PLAT} success"
+}
+
+function pack_lichee_4_android()
+{
+    cd ${PRJ_ROOT_DIR}
+    if [ -d ../android ]; then
+        (cd ../android && source ./build/envsetup.sh && lunch cheetah_fvd_p1-eng && pack)
+    else
+        pt_error "Android directory not found"
+    fi
+}
+
+function build_uboot_4_android()
+{
+    cd ${PRJ_ROOT_DIR}
+    execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
+    pack_lichee_4_android
+    pt_info "build and pack u-boot for ${ANDROID_PLAT} success"    
 }
 
 function build_lichee_4_android()
 {
-    pt_info "building lichee for ANDROID platform"
     cd ${PRJ_ROOT_DIR}
     execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
     execute_cmd "echo -e \"1\n0\n\" | ./build.sh config"
-    pt_info "build and pack lichee for ANDROID platform success"
-}
-
-function build_clean()
-{
-    pt_info "cleaning lichee"
-    cd ${PRJ_ROOT_DIR}
-    execute_cmd "./build.sh -p sun50iw2p1 -k linux-3.10 -b cheetah-p1 -m clean"
-    pt_info "clean lichee success"
+    pt_info "build lichee for ${ANDROID_PLAT} success. Please build and pack in Android directory"
 }
 
 cd ..
@@ -161,27 +176,27 @@ touch ./linux-3.10/.scmversion
 
 if [ "x${PLATFORM}" = "xlinux" ]; then
     if [ "x${TARGET}" = "xpack" ]; then
-        pack_lichee
-        pt_info "pack lichee for Linux platform success"
-        exit 0
+        pack_lichee_4_linux
+        pt_info "pack lichee for ${LINUX_PLAT} success"   
     elif [ "x${TARGET}" = "xu-boot" ]; then
-        build_uboot
-        exit 0
+        build_uboot_4_linux
     elif [ "x${TARGET}" = "xkernel" ]; then
-         build_kernel_4_linux
-        exit 0
+        build_kernel_4_linux
     elif [ "x${TARGET}" = "xall" ]; then
-         build_lichee_4_linux
-        exit 0
+        build_lichee_4_linux
     elif [ "x${TARGET}" = "xclean" ]; then
-        build_clean
-        exit 0
+        build_clean_4_linux
     else
         pt_error "unsupported target"
         usage
-        exit 0
     fi
 elif [ "x${PLATFORM}" = "xandroid" ]; then
-    build_lichee_4_android
-    exit 0
+    if [ "x${TARGET}" = "xpack" ]; then
+        pack_lichee_4_android
+        pt_info "pack lichee for ${ANDROID_PLAT} success" 
+    elif [ "x${TARGET}" = "xu-boot" ]; then
+        build_uboot_4_android
+    else
+        build_lichee_4_android
+    fi
 fi
