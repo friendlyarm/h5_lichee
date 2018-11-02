@@ -159,7 +159,7 @@ function build_lichee_4_android()
 
 cd ..
 PRJ_ROOT_DIR=`pwd`
-H5_BOARD="nanopi-neo2|nanopi-m1-plus2"
+H5_BOARD="nanopi-neo2|nanopi-m1-plus2|nanopi-neo-plus2"
 H5_PLATFORM="linux|android"
 H5_TARGET="all|u-boot|kernel|pack|clean"
 BOARD_NAME=none
