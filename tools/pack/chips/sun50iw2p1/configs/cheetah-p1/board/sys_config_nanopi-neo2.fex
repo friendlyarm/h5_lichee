@@ -63,6 +63,7 @@ recovery_key = port:PL04<0><default><default><default>
 boot_init_gpio_used	 = 1
 gpio0 =  port:PL10<1><default><default><1>
 gpio1 =  port:PA10<1><default><default><1>
+gpio2 =  port:PL06<1><default><default><0>
 
 
 ;---------------------------------------------------------------------------------------------------------

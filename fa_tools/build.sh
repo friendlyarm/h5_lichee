@@ -1,7 +1,5 @@
-#!/bin/bash
+#!/bin/bash -u
 
-LINUX_PLAT="LINUX platform"
-ANDROID_PLAT="ANDROID platform"
 function pt_error()
 {
     echo -e "\033[1;31mERROR: $*\033[0m"
@@ -17,9 +15,36 @@ function pt_info()
     echo -e "\033[1;32mINFO: $*\033[0m"
 }
 
-function execute_cmd() 
+function run_cmd() 
 {
-    eval $@ || exit $?
+    if [ "x${DEBUG}" = "xyes" ]; then
+        pt_info "                =>cmd: ${@}"
+    fi
+    
+    eval $@
+    local ret=$?
+    if [ ${ret} -ne 0 ]; then
+        pt_error "$@ fail"
+        exit  ${ret}
+    fi
+}
+
+function print_func()
+{
+    if [ "x${DEBUG}" = "xyes" ]; then
+        pt_info "   =>func: $@"
+    fi
+}
+
+function DBG_INFO()
+{
+    if [ "x${DEBUG}" = "xyes" ]; then
+        if [ "x${1}" = "xfilename" ]; then
+            pt_warn "=>file: ${2}"
+        else
+            pt_info "        =>func: $@"
+        fi
+    fi
 }
 
 function usage()
@@ -30,9 +55,11 @@ function usage()
 
 function parse_arg()
 {
-    if [ $# -lt 4 ]; then
+    if [ $# -ne 6 ]; then
         usage
     fi
+
+    local found=0
     OLD_IFS=${IFS}
     IFS="|"
     while getopts "b:p:t:" opt
@@ -43,13 +70,13 @@ function parse_arg()
                 for TMP in ${H5_BOARD}
                 do
                     if [ ${BOARD_NAME} = ${TMP} ];then
-                        FOUND=1
+                        found=1
                         break
                     else
-                        FOUND=0
+                        found=0
                     fi
                 done
-                if [ ${FOUND} -eq 0 ]; then
+                if [ ${found} -eq 0 ]; then
                     pt_error "unsupported board"
                     usage
                 fi
@@ -59,13 +86,13 @@ function parse_arg()
                 for TMP in ${H5_PLATFORM}
                 do
                     if [ ${PLATFORM} = ${TMP} ];then
-                        FOUND=1
+                        found=1
                         break
                     else
-                        FOUND=0
+                        found=0
                     fi
                 done
-                if [ ${FOUND} -eq 0 ]; then
+                if [ ${found} -eq 0 ]; then
                     pt_error "unsupported platform"
                     usage
                 fi
@@ -75,13 +102,13 @@ function parse_arg()
                 for TMP in ${H5_TARGET}
                 do
                     if [ ${TARGET} = ${TMP} ];then
-                        FOUND=1
+                        found=1
                         break
                     else
-                        FOUND=0
+                        found=0
                     fi
                 done
-                if [ ${FOUND} -eq 0 ]; then
+                if [ ${found} -eq 0 ]; then
                     pt_error "unsupported target"
                     usage
                 fi
@@ -95,40 +122,52 @@ function parse_arg()
 
 function pack_lichee_4_linux()
 {
+    DBG_INFO "$FUNCNAME" $@
+
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "./build.sh pack" 
+    run_cmd "./build.sh pack" 
+
+    find ./${AW_KER}/output/lib/modules/ -name \*.ko \
+    	| xargs ./brandy/toolchain/gcc-aarch64/bin/aarch64-linux-gnu-strip --strip-unneeded
+    (cd ./${AW_KER}/output/lib/modules/ && tar czf ${FA_OUT}/3.10.65.tar.gz 3.10.65)
+    run_cmd "cp ./${AW_KER}/output/boot.img ${FA_OUT}/"
+    run_cmd "cp ./${AW_KER}/output/rootfs.cpio.gz ${FA_OUT}/"
+    run_cmd "cp ./tools/pack/out/boot0_sdcard.fex ${FA_OUT}/"
+    run_cmd "cp ./tools/pack/out/boot_package.fex ${FA_OUT}/"
+
+    tree ${FA_OUT}
 }
 
 function build_uboot_4_linux()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
+    run_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
     pack_lichee_4_linux
-    pt_info "build and pack u-boot for ${LINUX_PLAT} success"    
+    pt_info "Build and pack u-boot for ${LINUX_PLAT_MSG} success"    
 }
 
 function  build_kernel_4_linux()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
+    run_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
     pack_lichee_4_linux
-    pt_info "build and pack linux kernel for ${LINUX_PLAT} success"
+    pt_info "Build and pack linux kernel for ${LINUX_PLAT_MSG} success"
 }
 
 function  build_lichee_4_linux()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
-    execute_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
+    run_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
+    run_cmd "echo -e \"1\n2\n1\n\" | ./build.sh config"
     pack_lichee_4_linux
-    pt_info "build and pack lichee for ${LINUX_PLAT} success"
+    pt_info "Build and pack lichee for ${LINUX_PLAT_MSG} success"
 }
 
 function build_clean_4_linux()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "./build.sh -p sun50iw2p1 -k linux-3.10 -b cheetah-p1 -m clean"
-    pt_info "clean lichee for ${LINUX_PLAT} success"
+    run_cmd "./build.sh -p sun50iw2p1 -k linux-3.10 -b cheetah-p1 -m clean"
+    pt_info "Clean lichee for ${LINUX_PLAT_MSG} success"
 }
 
 function pack_lichee_4_android()
@@ -144,19 +183,20 @@ function pack_lichee_4_android()
 function build_uboot_4_android()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
+    run_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
     pack_lichee_4_android
-    pt_info "build and pack u-boot for ${ANDROID_PLAT} success"    
+    pt_info "Build and pack u-boot for ${ANDROID_PLAT_MSG} success"    
 }
 
 function build_lichee_4_android()
 {
     cd ${PRJ_ROOT_DIR}
-    execute_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
-    execute_cmd "echo -e \"1\n0\n\" | ./build.sh config"
-    pt_info "build lichee for ${ANDROID_PLAT} success. Please build and pack in Android directory"
+    run_cmd "cd ./brandy && ./build.sh -p sun50iw2p1 && cd -"
+    run_cmd "echo -e \"1\n0\n\" | ./build.sh config"
+    pt_info "Build lichee for ${ANDROID_PLAT_MSG} success. Please build and pack in Android directory"
 }
 
+DEBUG="no"
 cd ..
 PRJ_ROOT_DIR=`pwd`
 H5_BOARD="nanopi-neo2|nanopi-m1-plus2|nanopi-neo-plus2"
@@ -166,18 +206,26 @@ BOARD_NAME=none
 PLATFORM=linux
 TARGET=all
 SYS_CONFIG_DIR=${PRJ_ROOT_DIR}/tools/pack/chips/sun50iw2p1/configs/cheetah-p1
+AW_KER=linux-3.10
 
+LINUX_PLAT_MSG="Linux platform"
+ANDROID_PLAT_MSG="Android platform"
+
+# friendlyelec attribute
+FA_OUT=${PRJ_ROOT_DIR}/fa_out
 parse_arg $@
 
-pt_info "preparing sys_config.fex"
 cd ${PRJ_ROOT_DIR}
+mkdir -p ${FA_OUT}
+
+pt_info "preparing sys_config.fex"
 cp -rvf ${SYS_CONFIG_DIR}/board/sys_config_${BOARD_NAME}.fex ${SYS_CONFIG_DIR}/sys_config.fex
 touch ./linux-3.10/.scmversion
 
 if [ "x${PLATFORM}" = "xlinux" ]; then
     if [ "x${TARGET}" = "xpack" ]; then
         pack_lichee_4_linux
-        pt_info "pack lichee for ${LINUX_PLAT} success"   
+        pt_info "Pack lichee for ${LINUX_PLAT_MSG} success"   
     elif [ "x${TARGET}" = "xu-boot" ]; then
         build_uboot_4_linux
     elif [ "x${TARGET}" = "xkernel" ]; then
@@ -193,7 +241,7 @@ if [ "x${PLATFORM}" = "xlinux" ]; then
 elif [ "x${PLATFORM}" = "xandroid" ]; then
     if [ "x${TARGET}" = "xpack" ]; then
         pack_lichee_4_android
-        pt_info "pack lichee for ${ANDROID_PLAT} success" 
+        pt_info "Pack lichee for ${ANDROID_PLAT_MSG} success" 
     elif [ "x${TARGET}" = "xu-boot" ]; then
         build_uboot_4_android
     else
