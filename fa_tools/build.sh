@@ -196,6 +196,18 @@ function build_lichee_4_android()
     pt_info "Build lichee for ${ANDROID_PLAT_MSG} success. Please build and pack in Android directory"
 }
 
+function prepare_toolchain()
+{
+    local src_dir=${PRJ_ROOT_DIR}/fa_tools/toolchain_h5_linux-3.10
+    local target_dir=${PRJ_ROOT_DIR}/brandy/toolchain
+
+    if [ ! -e ${target_dir}/gcc-linaro-aarch64.tar.xz ] || [ ! -e ${target_dir}/gcc-linaro-arm-4.6.3.tar.xz ]; then
+        [ -d ${src_dir} ] || git clone https://github.com/friendlyarm/toolchain_h5_linux-3.10 ${src_dir} --depth 1 -b master
+        run_cmd "cp ${src_dir}/gcc-linaro-arm-4.6.3.tar.xz ${target_dir}/"
+        run_cmd "cat ${src_dir}/gcc-linaro-aarch64.tar.xz* >${target_dir}/gcc-linaro-aarch64.tar.xz"
+    fi
+}
+
 DEBUG="no"
 cd ..
 PRJ_ROOT_DIR=`pwd`
@@ -222,6 +234,7 @@ pt_info "preparing sys_config.fex"
 cp -rvf ${SYS_CONFIG_DIR}/board/sys_config_${BOARD_NAME}.fex ${SYS_CONFIG_DIR}/sys_config.fex
 touch ./linux-3.10/.scmversion
 
+prepare_toolchain
 if [ "x${PLATFORM}" = "xlinux" ]; then
     if [ "x${TARGET}" = "xpack" ]; then
         pack_lichee_4_linux
